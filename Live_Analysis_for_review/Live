@@ -1,0 +1,79 @@
+#!/bin/sh
+
+start=`date +%s`
+runtime=1
+mkdir Analyzed > /dev/null 2>&1
+
+rm -r IDH1_results_C237del_G238del_par > /dev/null 2>&1
+mkdir IDH1_results_C237del_G238del_par > /dev/null 2>&1
+mkdir IDH1_results_C237del_G238del_par/raw > /dev/null 2>&1
+
+rm -r IDH2_results_C697del_T698del_par > /dev/null 2>&1
+mkdir IDH2_results_C697del_T698del_par > /dev/null 2>&1
+mkdir IDH2_results_C697del_T698del_par/raw > /dev/null 2>&1
+
+rm -r pTERT_results_A842del_A865del_par > /dev/null 2>&1
+mkdir pTERT_results_A842del_A865del_par > /dev/null 2>&1
+mkdir pTERT_results_A842del_A865del_par/raw > /dev/null 2>&1
+
+rm -r H3F3A_results_A384del_G385del_G403-406del_par > /dev/null 2>&1
+mkdir H3F3A_results_A384del_G385del_G403-406del_par > /dev/null 2>&1
+mkdir H3F3A_results_A384del_G385del_G403-406del_par/raw > /dev/null 2>&1
+
+rm -r HIST1H3B_results_A395del_par > /dev/null 2>&1
+mkdir HIST1H3B_results_A395del_par > /dev/null 2>&1
+mkdir HIST1H3B_results_A395del_par/raw > /dev/null 2>&1
+
+rm -r BRAF_results_A695del_par > /dev/null 2>&1
+mkdir BRAF_results_A695del_par > /dev/null 2>&1
+mkdir BRAF_results_A695del_par/raw > /dev/null 2>&1
+
+> IDH1_results_C237del_G238del_par/IDH1_graph.csv
+> IDH2_results_C697del_T698del_par/IDH2_graph.csv
+> pTERT_results_A842del_A865del_par/pTERT_graph.csv
+> H3F3A_results_A384del_G385del_G403-406del_par/H3F3A_graph.csv
+> HIST1H3B_results_A395del_par/HIST1H3B_graph.csv
+> BRAF_results_A695del_par/BRAF_graph.csv
+
+
+python3 ~/Desktop/Live_analysis/plot_markers "$1" &
+
+
+
+check_markers() {
+		sh ~/Desktop/Live_analysis/IDH1_variants_C237_G238_del_parallel "$f" > /dev/null 2>&1
+		sh ~/Desktop/Live_analysis/IDH2_variants_C697_T698_del_parallel "$f" > /dev/null 2>&1 
+		#sh ~/Desktop/Live_analysis/pTERT_variants_A842_A865_del_parallel "$f" > /dev/null 2>&1
+		sh ~/Desktop/Live_analysis/pTERT_variants_short_test "$f" > /dev/null 2>&1 
+		sh ~/Desktop/Live_analysis/H3F3A_variants_A384_G385_G403-406_del_parallel "$f" > /dev/null 2>&1 
+		sh ~/Desktop/Live_analysis/HIST1H3B_variants_A395_del_parallel "$f" > /dev/null 2>&1
+		sh ~/Desktop/Live_analysis/BRAF_variants_A695_del_parallel "$f" > /dev/null 2>&1
+		mv $f Analyzed > /dev/null 2>&1
+}
+
+
+while pgrep -f "plot_markers" > /dev/null 2>&1
+do
+	now=`date +%s`
+	runtime=$((now-start))
+	echo -n "\rRuntime $runtime s"
+	if ls *.fastq > /dev/null 2>&1
+	then 
+		for f in *.fastq
+		do
+			now=`date +%s`
+			runtime=$((now-start))
+			check_markers > /dev/null  2>&1 
+			echo -n "\rRuntime $runtime s"
+		done
+	fi
+done
+
+
+
+
+
+
+
+
+

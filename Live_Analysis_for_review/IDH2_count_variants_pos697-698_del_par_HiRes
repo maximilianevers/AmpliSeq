@@ -1,0 +1,141 @@
+#Calculating abundancy of the queried variant
+
+num_seq=1
+num_good=0
+num_bad=0
+num_CT=0
+rel_CT=0
+num_CC=0
+rel_CC=0
+num_TT=0
+rel_TT=0
+num_AT=0
+rel_AT=0
+num_CA=0
+rel_CA=0
+l=0
+#list_seq=[]
+
+
+import csv
+import sys
+
+with open(sys.argv[1], newline='') as f:
+	readCSV = csv.reader (f, delimiter=',')
+	for row in readCSV:
+
+
+		if row[2] == '696' and row[3] == '696' and row[6] == '-' and row[7] == 'ct':
+			num_CT+=1
+
+		if row[2] == '695' and row[3] == '695' and row[6] == '-' and row[7] == 'cc':
+			num_CC+=1
+		
+		if row[2] == '695' and row[3] == '695' and row[6] == '-' and row[7] == 'c':
+			num_CC+=1
+
+		if row[2] == '696' and row[3] == '696' and row[6] == '-' and row[7] == 'tt':
+			num_TT+=1
+
+		if row[2] == '696' and row[3] == '696' and row[6] == '-' and row[7] == 'at':
+			num_AT+=1
+
+		if row[2] == '696' and row[3] == '696' and row[6] == '-' and row[7] == 'ca':
+			num_CA+=1
+
+
+		if int(row[2]) < int(l) and row[2] != "":
+			
+			num_good = num_CT + num_CC + num_TT + num_AT + num_CA
+			num_bad = num_seq - num_good
+			try:
+				rel_CT=round(num_CT/num_good*100, 2)
+				rel_CC=round(num_CC/num_good*100, 2)
+				rel_TT=round(num_TT/num_good*100, 2)
+				rel_AT=round(num_AT/num_good*100, 2)
+				rel_CA=round(num_CA/num_good*100, 2)
+			except:
+				pass
+		
+			with open('Test_count_IDH2_individual.csv', 'a+') as t:
+				writer=csv.writer(t, delimiter=',')
+				writer.writerow([num_seq,num_good,num_bad,num_CT,rel_CT,num_CC,rel_CC,num_TT,rel_TT,num_AT,rel_AT,num_CA,rel_CA])
+			
+			num_seq+=1
+		l = row[2]
+	
+		
+#______________________________________
+
+
+#ratioCT = round(num_CT/num_seq*100, 2)
+#ratioCC = round(num_CC/num_seq*100, 2)
+#ratioTT = round(num_TT/num_seq*100, 2)
+#ratioAT = round(num_AT/num_seq*100, 2)
+#ratioCA = round(num_CA/num_seq*100, 2)
+#sum_ratio = ratioCT + ratioCC + ratioTT + ratioAT + ratioCA
+
+#num_good = num_CT + num_CC + num_TT + num_AT + num_CA
+#num_bad = num_seq - num_good
+
+
+#n_ratioCT = round(ratioCT/sum_ratio*100, 2)
+#n_ratioCC = round(ratioCC/sum_ratio*100, 2)
+#n_ratioTT = round(ratioTT/sum_ratio*100, 2)
+#n_ratioAT = round(ratioAT/sum_ratio*100, 2)
+#n_ratioCA = round(ratioCA/sum_ratio*100, 2)
+
+
+#with open(sys.argv[1]+'_count_IDH2.csv', 'w') as q:
+#	writer=csv.writer(q, delimiter=',')
+#	writer.writerow([num_seq,num_good,num_bad,num_CT,num_CC,num_TT,num_AT,num_CA])
+#
+#with open('../IDH2_graph.csv','r') as j: 
+#	reader=csv.reader(j, delimiter=',')
+#	for row in reader:pass
+#	try:
+#		num_seq+=int(row[0])
+#		num_good+=int(row[1])
+#		num_bad+=int(row[2])
+#		num_CT+=int(row[3])
+#		num_CC+=int(row[5])
+#		num_TT+=int(row[7])
+#		num_AT+=int(row[9])
+#		num_CA+=int(row[11])
+#	except:
+#		pass
+#	rel_CT=num_CT/num_good*100
+#	rel_CC=num_CC/num_good*100
+#	rel_TT=num_TT/num_good*100
+#	rel_AT=num_AT/num_good*100
+#	rel_CA=num_CA/num_good*100
+#	
+#
+#	with open('../IDH2_graph.csv', 'a+') as f:
+#		writer=csv.writer(f, delimiter=',')
+#		writer.writerow([num_seq,num_good,num_bad,num_CT,rel_CT,num_CC,rel_CC,num_TT,rel_TT,num_AT,rel_AT,num_CA,rel_CA])
+#
+#
+#
+
+#print(num_seq_err, num_seq_err1, num_seq_err2, num_seq_err3)
+
+#print ("\n Total mappings \t :", num_seq, "\n", "Good mappings \t\t :", num_good, "\n", "Bad mappings \t\t :", num_bad, "\n\n", "C698 reads :", num_C698, "\t = ", ratioC, "% \t or", n_ratioC, "% normalized \n", "T698 reads :", num_T698, "\t = ", ratioT, "% \t or", n_ratioT, "% normalized \n", "A698 reads :", num_A698, "\t = ", ratioA, "% \t or", n_ratioA, "% normalized \n", "G698 reads :", num_G698, "\t = ", ratioG, "% \t or", n_ratioG, "% normalized \n")
+
+#print ("Total mappings \t :", num_seq, "\n", "C698 reads :", num_C698, "\t = ", ratioC, "% \t or", n_ratioC, "% normalized \n", "T698 reads :", num_T698, "\t = ", ratioT, "% \t or", n_ratioT, "% normalized \n", "A698 reads :", num_A698, "\t = ", ratioA, "% \t or", n_ratioA, "% normalized \n", "G698 reads :", num_G698, "\t = ", ratioG, "% \t or", n_ratioG, "% normalized \n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

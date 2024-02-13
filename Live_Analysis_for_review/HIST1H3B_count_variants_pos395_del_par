@@ -1,0 +1,104 @@
+#Calculating abundancy of the queried variant
+
+num_seq=1
+pos395_num_good=0
+pos395_num_bad=0
+num_pos395_A=0
+rel_pos395_A=0
+num_pos395_T=0
+rel_pos395_T=0
+l=0
+
+
+
+import csv
+import sys
+
+with open(sys.argv[1], newline='') as f:
+	readCSV = csv.reader (f, delimiter=',')
+	for row in readCSV:
+
+
+		if row[2] == '393' and row[3] == '393' and row[6] == '-' and row[7] in ['a','aa']:
+			num_pos395_A+=1
+
+		if row[2] == '393' and row[3] == '393' and row[6] == '-' and row[7] in ['at']:
+			num_pos395_T+=1
+
+		if row[2] == '394' and row[3] == '394' and row[6] == '-' and row[7] in ['t']:
+			num_pos395_T+=1
+
+
+#		if row[2] == '392' and row[3] == '393' and row[6] == 'c' and row[7] in ['t']:
+#			num_pos395_T+=1
+#
+#		if row[2] == '393' and row[3] == '394' and row[6] == 'a' and row[7] in ['t']:
+#			num_pos395_T+=1
+
+		if int(row[2]) < int(l) and row[2] != "":
+			num_seq+=1
+
+		l = row[2]
+
+
+#ratioWt = round(num_Wt/num_seq*100, 2)
+#ratio_pos395_T = round(num_pos395_T/num_seq*100, 2)
+#ratio_pos403_AG = round(num_pos403_AG/num_seq*100, 2)
+#ratio_pos403_CG = round(num_pos403_CG/num_seq*100, 2)
+#ratio_pos403_GT = round(num_pos403_GT/num_seq*100, 2)
+
+#sum_ratio = ratioWt + ratio_pos395_T + ratio_pos403_AG + ratio_pos403_CG + ratio_pos403_GT
+
+pos395_num_good = num_pos395_A + num_pos395_T 
+pos395_num_bad = num_seq - pos395_num_good
+
+
+#n_ratioWt = round(ratioCG/sum_ratio*100, 2)
+#n_ratio_pos395_T = round(ratioTG/sum_ratio*100, 2)
+#n_ratio_pos403_AG = round(ratioAG/sum_ratio*100, 2)
+#n_ratio_pos403_CG = round(ratioCA/sum_ratio*100, 2)
+#n_ratio_pos403_GT = round(ratioCT/sum_ratio*100, 2)
+
+
+
+with open(sys.argv[1]+'_count_HIST1H3B.csv', 'w') as q:
+	writer=csv.writer(q, delimiter=',')
+	writer.writerow([num_seq,pos395_num_good,pos395_num_bad,num_pos395_A,num_pos395_T])
+
+
+with open('../HIST1H3B_graph.csv','r') as j: 
+	reader=csv.reader(j, delimiter=',')
+	for row in reader:pass
+	try:
+		num_seq+=int(row[0])
+		pos395_num_good+=int(row[1])
+		pos395_num_bad+=int(row[2])
+		num_pos395_A+=int(row[3])
+		num_pos395_T+=int(row[5])
+		
+	except:
+		pass
+	
+	rel_pos395_A=num_pos395_A/pos395_num_good*100
+	rel_pos395_T=num_pos395_T/pos395_num_good*100
+	
+
+	with open('../HIST1H3B_graph.csv', 'a+') as f:
+		writer=csv.writer(f, delimiter=',')
+		writer.writerow([num_seq,pos395_num_good,pos395_num_bad,num_pos395_A,rel_pos395_A,num_pos395_T,rel_pos395_T])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

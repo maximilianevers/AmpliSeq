@@ -1,0 +1,783 @@
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.pyplot import style
+import datetime
+from time import time
+import sys
+
+
+start=time()
+
+
+def animate(i):
+
+	now=time()
+	global runtime
+	runtime=now-start+1
+	plt.suptitle(datetime.timedelta(seconds=round(int(runtime),0)),y=0.5)
+
+	global IDH1_seq
+	global IDH1_seq_good
+	global IDH1_Wt_now
+	global IDH1_R132H_now 
+	global IDH1_R132L_now
+	global IDH1_R132C_now 
+	global IDH1_R132S_now 
+	global IDH1_R132G_now
+	global IDH2_seq
+	global IDH2_seq_good
+	global IDH2_Wt_now
+	global IDH2_R172G_now
+	global IDH2_R172K_now
+	global IDH2_R172M_now
+	global IDH2_R172W_now
+	global pTERT_seq
+	global pTERT_C228_seq_good
+	global pTERT_C228Wt_now
+	global pTERT_C228T_now
+	global pTERT_C250_seq_good
+	global pTERT_C250Wt_now
+	global pTERT_C250T_now
+	global H3F3A_seq
+	global H3F3A_K27_seq_good
+	global H3F3A_K27Wt_now
+	global H3F3A_K27M_now
+	global H3F3A_G34_seq_good
+	global H3F3A_G34Wt_now
+	global H3F3A_G34R_G403A_now
+	global H3F3A_G34R_G403C_now
+	global H3F3A_G34V_now
+	global HIST1H3B_seq
+	global HIST1H3B_K27_seq_good
+	global HIST1H3B_K27Wt_now
+	global HIST1H3B_K27M_now
+	global BRAF_seq
+	global BRAF_seq_good
+	global BRAF_Wt_now
+	global BRAF_V600E_now
+	
+	IDH1_seq = 0
+	IDH1_seq_good = 0
+	IDH1_Wt_now = 0
+	IDH1_R132H_now = 0
+	IDH1_R132L_now = 0
+	IDH1_R132C_now = 0
+	IDH1_R132S_now = 0
+	IDH1_R132G_now = 0
+	IDH2_seq = 0
+	IDH2_seq_good = 0
+	IDH2_Wt_now = 0
+	IDH2_R172G_now = 0
+	IDH2_R172K_now = 0
+	IDH2_R172M_now = 0
+	IDH2_R172W_now = 0
+	pTERT_seq = 0
+	pTERT_C228_seq_good = 0
+	pTERT_C228Wt_now = 0
+	pTERT_C228T_now = 0
+	pTERT_C250_seq_good = 0
+	pTERT_C250Wt_now = 0
+	pTERT_C250T_now = 0
+	H3F3A_seq = 0
+	H3F3A_K27_seq_good = 0
+	H3F3A_K27Wt_now = 0
+	H3F3A_K27M_now = 0
+	H3F3A_G34_seq_good = 0
+	H3F3A_G34Wt_now = 0
+	H3F3A_G34R_G403A_now = 0
+	H3F3A_G34R_G403C_now = 0
+	H3F3A_G34V_now = 0
+	HIST1H3B_seq = 0
+	HIST1H3B_K27_seq_good = 0
+	HIST1H3B_K27Wt_now = 0
+	HIST1H3B_K27M_now = 0
+	BRAF_seq = 0
+	BRAF_seq_good = 0
+	BRAF_Wt_now = 0
+	BRAF_V600E_now = 0
+
+	IDH1_csvfile = open('IDH1_results_C237del_G238del_par/IDH1_graph.csv','r').read()
+	IDH1_lines = IDH1_csvfile.split('\n')
+
+	global IDH1_x
+	global IDH1_Wt
+	global IDH1_R132H
+	global IDH1_R132L
+	global IDH1_R132C
+	global IDH1_R132S
+	global IDH1_R132G
+	global IDH1_ratio
+
+	IDH1_x=[]
+	IDH1_Wt=[]
+	IDH1_R132H=[]
+	IDH1_R132L=[]
+	IDH1_R132C=[]
+	IDH1_R132S=[]
+	IDH1_R132G=[]
+
+	for line in IDH1_lines:
+		if len(line) > 1:
+			a,b,c,d,e,f,g,h,i,j,k,l,m,n,o = line.split(',')
+			IDH1_seq = a
+			IDH1_x.append(float(b))
+			IDH1_seq_good = b
+			try: 
+				IDH1_ratio = round(int(IDH1_seq_good)/int(IDH1_seq)*100,2)
+			except:
+				pass
+			IDH1_Wt.append(float(e))
+			IDH1_Wt_now = e
+			IDH1_R132H.append(float(g))
+			IDH1_R132H_now = g
+			IDH1_R132L.append(float(i))
+			IDH1_R132L_now = i
+			IDH1_R132C.append(float(k))
+			IDH1_R132C_now = k
+			IDH1_R132S.append(float(m))
+			IDH1_R132S_now = m
+			IDH1_R132G.append(float(o))
+			IDH1_R132G_now = o
+
+
+	IDH2_csvfile = open('IDH2_results_C697del_T698del_par/IDH2_graph.csv','r').read()
+	IDH2_lines = IDH2_csvfile.split('\n')
+
+	global IDH2_x
+	global IDH2_Wt
+	global IDH2_R172G
+	global IDH2_R172K
+	global IDH2_R172M
+	global IDH2_R172W
+	global IDH2_ratio
+
+	IDH2_x=[]
+	IDH2_Wt=[]
+	IDH2_R172G=[]
+	IDH2_R172K=[]
+	IDH2_R172M=[]
+	IDH2_R172W=[]
+	
+	for line in IDH2_lines:
+		if len(line) > 1:
+			a,b,c,d,e,f,g,h,i,j,k,l,m = line.split(',')
+			IDH2_seq = a
+			IDH2_x.append(float(b))
+			IDH2_seq_good = b
+			try: 
+				IDH2_ratio = round(int(IDH2_seq_good)/int(IDH2_seq)*100,2)
+			except:
+				pass
+			IDH2_Wt.append(float(e))
+			IDH2_Wt_now = e
+			IDH2_R172G.append(float(g))
+			IDH2_R172G_now = g
+			IDH2_R172K.append(float(i))
+			IDH2_R172K_now = i
+			IDH2_R172M.append(float(k))
+			IDH2_R172M_now = k
+			IDH2_R172W.append(float(m))
+			IDH2_R172W_now = m
+
+
+	pTERT_csvfile = open('pTERT_results_A842del_A865del_par/pTERT_graph.csv','r').read()
+	pTERT_lines = pTERT_csvfile.split('\n')
+
+	global pTERT_C228x
+	global pTERT_C228Wt
+	global pTERT_C228T
+	global pTERT_C250x
+	global pTERT_C250Wt
+	global pTERT_C250T
+	global pTERT_C228_ratio
+	global pTERT_C250_ratio
+
+	pTERT_C228x=[]
+	pTERT_C228Wt=[]
+	pTERT_C228T=[]
+	pTERT_C250x=[]
+	pTERT_C250Wt=[]
+	pTERT_C250T=[]
+
+	for line in pTERT_lines:
+		if len(line) > 1:
+			a,b,c,d,e,f,g,h,i,j,k,l,m = line.split(',')
+			pTERT_seq = a
+			pTERT_C228x.append(float(b))
+			pTERT_C228_seq_good = b
+			try: 
+				pTERT_C228_ratio = round(int(pTERT_C228_seq_good)/int(pTERT_seq)*100,2)
+			except:
+				pass
+			pTERT_C228Wt.append(float(e))
+			pTERT_C228Wt_now = e
+			pTERT_C228T.append(float(g))
+			pTERT_C228T_now = g
+			pTERT_C250x.append(float(h))
+			pTERT_C250_seq_good = h
+			try: 
+				pTERT_C250_ratio = round(int(pTERT_C250_seq_good)/int(pTERT_seq)*100,2)
+			except:
+				pass
+			pTERT_C250Wt.append(float(k))
+			pTERT_C250Wt_now = k
+			pTERT_C250T.append(float(m))
+			pTERT_C250T_now = m
+
+
+	H3F3A_csvfile = open('H3F3A_results_A384del_G385del_G403-406del_par/H3F3A_graph.csv','r').read()
+	H3F3A_lines = H3F3A_csvfile.split('\n')
+
+	global H3F3A_K27x
+	global H3F3A_K27Wt
+	global H3F3A_K27M
+	global H3F3A_G34x
+	global H3F3A_G34Wt
+	global H3F3A_G34R_G403A
+	global H3F3A_G34R_G403C
+	global H3F3A_G34V
+	global H3F3A_K27_ratio
+	global H3F3A_G34_ratio
+
+	H3F3A_K27x=[]
+	H3F3A_K27Wt=[]
+	H3F3A_K27M=[]
+	H3F3A_G34x=[]
+	H3F3A_G34Wt=[]
+	H3F3A_G34R_G403A=[]
+	H3F3A_G34R_G403C=[]
+	H3F3A_G34V=[]
+
+	for line in H3F3A_lines:
+		if len(line) > 1:
+			a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q = line.split(',')
+			H3F3A_seq = a
+			H3F3A_K27x.append(float(b))
+			H3F3A_K27_seq_good = b
+			try: 
+				H3F3A_K27_ratio = round(int(H3F3A_K27_seq_good)/int(H3F3A_seq)*100,2)
+			except:
+				pass
+			H3F3A_K27Wt.append(float(e))
+			H3F3A_K27Wt_now = e
+			H3F3A_K27M.append(float(g))
+			H3F3A_K27M_now = g
+			H3F3A_G34x.append(float(h))
+			H3F3A_G34_seq_good = h
+			try: 
+				H3F3A_G34_ratio = round(int(H3F3A_G34_seq_good)/int(H3F3A_seq)*100,2)
+			except:
+				pass
+			H3F3A_G34Wt.append(float(k))
+			H3F3A_G34Wt_now = k
+			H3F3A_G34R_G403A.append(float(m))
+			H3F3A_G34R_G403A_now = m
+			H3F3A_G34R_G403C.append(float(o))
+			H3F3A_G34R_G403C_now = o
+			H3F3A_G34V.append(float(q))
+			H3F3A_G34V_now = q
+			
+
+	HIST1H3B_csvfile = open('HIST1H3B_results_A395del_par/HIST1H3B_graph.csv','r').read()
+	HIST1H3B_lines = HIST1H3B_csvfile.split('\n')
+
+	global HIST1H3B_K27x
+	global HIST1H3B_K27Wt
+	global HIST1H3B_K27M
+	global HIST1H3B_ratio
+
+	HIST1H3B_K27x=[]
+	HIST1H3B_K27Wt=[]
+	HIST1H3B_K27M=[]
+	
+	for line in HIST1H3B_lines:
+		if len(line) > 1:
+			a,b,c,d,e,f,g = line.split(',')
+			HIST1H3B_seq = a
+			HIST1H3B_K27x.append(float(b))
+			HIST1H3B_K27_seq_good = b
+			try: 
+				HIST1H3B_ratio = round(int(HIST1H3B_K27_seq_good)/int(HIST1H3B_seq)*100,2)
+			except:
+				pass
+			HIST1H3B_K27Wt.append(float(e))
+			HIST1H3B_K27Wt_now = e
+			HIST1H3B_K27M.append(float(g))
+			HIST1H3B_K27M_now = g
+
+
+	BRAF_csvfile = open('BRAF_results_A695del_par/BRAF_graph.csv','r').read()
+	BRAF_lines = BRAF_csvfile.split('\n')
+
+	global BRAFx
+	global BRAF_Wt
+	global BRAF_V600E
+	global BRAF_ratio
+
+	BRAFx=[]
+	BRAF_Wt=[]
+	BRAF_V600E=[]
+	
+	for line in BRAF_lines:
+		if len(line) > 1:
+			a,b,c,d,e,f,g = line.split(',')
+			BRAF_seq = a
+			BRAFx.append(float(b))
+			BRAF_seq_good = b
+			try: 
+				BRAF_ratio = round(int(BRAF_seq_good)/int(BRAF_seq)*100,2)
+			except:
+				pass
+			BRAF_Wt.append(float(e))
+			BRAF_Wt_now = e
+			BRAF_V600E.append(float(g))
+			BRAF_V600E_now = g
+			
+
+
+
+
+
+
+	plt.tight_layout()
+	plt.subplots_adjust(left=0.05,right=0.875,top=0.9,bottom=0.1,wspace=1,hspace=0.75)
+	
+	axs[0,0].clear()
+	axs[0,1].clear()
+	axs[0,2].clear()
+	axs[1,0].clear()
+	axs[1,1].clear()
+	axs[1,2].clear()
+	axs[2,0].clear()
+	axs[2,1].clear()
+	axs[2,2].clear()
+	axs[3,0].clear()
+	axs[3,1].clear()
+	axs[3,2].clear()
+
+	if IDH1_seq_good == 0:
+		axs[0,0].set_visible(False)
+		axs[1,0].set_visible(False)
+	else:
+		axs[0,0].set_visible(True)
+		axs[1,0].set_visible(True)
+
+	if IDH2_seq_good == 0:
+		axs[2,0].set_visible(False)
+		axs[3,0].set_visible(False)
+	else:
+		axs[2,0].set_visible(True)
+		axs[3,0].set_visible(True)
+
+	if pTERT_C228_seq_good == 0 and pTERT_C250_seq_good == 0:
+		axs[0,1].set_visible(False)
+		axs[1,1].set_visible(False)
+	else:
+		axs[0,1].set_visible(True)
+		axs[1,1].set_visible(True)
+
+	if H3F3A_K27_seq_good == 0 and H3F3A_G34_seq_good == 0:
+		axs[2,1].set_visible(False)
+		axs[3,1].set_visible(False)
+	else:
+		axs[2,1].set_visible(True)
+		axs[3,1].set_visible(True)
+
+	if HIST1H3B_K27_seq_good == 0:
+		axs[0,2].set_visible(False)
+		axs[1,2].set_visible(False)
+	else:
+		axs[0,2].set_visible(True)
+		axs[1,2].set_visible(True)
+
+	if BRAF_seq_good == 0:
+		axs[2,2].set_visible(False)
+		axs[3,2].set_visible(False)
+	else:
+		axs[2,2].set_visible(True)
+		axs[3,2].set_visible(True)
+	
+	axs[0,0].set_title('IDH1')
+	axs[0,0].plot(IDH1_x,IDH1_Wt,color='green',linewidth=1,label=('Wt '+ str(round(float(IDH1_Wt_now),2)))+'%')
+	axs[0,0].plot(IDH1_x,IDH1_R132H,color='red',linewidth=1,label=('R132H '+ str(round(float(IDH1_R132H_now),2)))+'%')
+	axs[0,0].plot(IDH1_x,IDH1_R132L,color='orangered',linewidth=1,label=('R132L '+ str(round(float(IDH1_R132L_now),2)))+'%')
+	axs[0,0].plot(IDH1_x,IDH1_R132C,color='tomato',linewidth=1,label=('R132C '+ str(round(float(IDH1_R132C_now),2)))+'%')
+	axs[0,0].plot(IDH1_x,IDH1_R132S,color='orange',linewidth=1,label=('R132S '+ str(round(float(IDH1_R132S_now),2)))+'%')
+	axs[0,0].plot(IDH1_x,IDH1_R132G,color='gold',linewidth=1,label=('R132G '+ str(round(float(IDH1_R132G_now),2)))+'%')
+
+	axs[1,0].barh(0,(int(IDH1_seq)/2), height=0.75, color='grey')
+	axs[1,0].barh(0, int(IDH1_seq_good), height=0.75, color='green')
+
+	axs[2,0].set_title('IDH2')
+	axs[2,0].plot(IDH2_x,IDH2_Wt,color='green',linewidth=1,label=('Wt '+ str(round(float(IDH2_Wt_now),2)))+'%')
+	axs[2,0].plot(IDH2_x,IDH2_R172G,color='red',linewidth=1,label=('R172G '+ str(round(float(IDH2_R172G_now),2)))+'%')
+	axs[2,0].plot(IDH2_x,IDH2_R172K,color='orangered',linewidth=1,label=('R172K '+ str(round(float(IDH2_R172K_now),2)))+'%')
+	axs[2,0].plot(IDH2_x,IDH2_R172M,color='tomato',linewidth=1,label=('R172M '+ str(round(float(IDH2_R172M_now),2)))+'%')
+	axs[2,0].plot(IDH2_x,IDH2_R172W,color='orange',linewidth=1,label=('R172W '+ str(round(float(IDH2_R172W_now),2)))+'%')
+
+	axs[3,0].barh(0,(int(IDH2_seq)/2), height=0.75, color='grey')
+	axs[3,0].barh(0, int(IDH2_seq_good), height=0.75, color='green')
+
+	axs[0,1].set_title('pTERT')
+	axs[0,1].plot(pTERT_C228x,pTERT_C228Wt,color='green',linewidth=1,label=('C228 Wt '+ str(round(float(pTERT_C228Wt_now),2)))+'%')
+	axs[0,1].plot(pTERT_C228x,pTERT_C228T,color='red',linewidth=1,label=('C228T '+ str(round(float(pTERT_C228T_now),2)))+'%')
+	axs[0,1].plot(pTERT_C228x,pTERT_C228T,linewidth=0,label='---------------')
+	axs[0,1].plot(pTERT_C250x,pTERT_C250Wt,color='green',linewidth=1,linestyle='--',label=('C250 Wt '+ str(round(float(pTERT_C250Wt_now),2)))+'%')
+	axs[0,1].plot(pTERT_C250x,pTERT_C250T,color='red',linewidth=1,linestyle='--',label=('C250T '+ str(round(float(pTERT_C250T_now),2)))+'%')
+	
+	axs[1,1].barh(0,(int(pTERT_seq)/2), height=0.75, color='grey')
+	axs[1,1].barh(0, int(pTERT_C250_seq_good), height=0.75, color='green')
+	axs[1,1].barh(1.1,(int(pTERT_seq)/2), height=0.75, color='grey')
+	axs[1,1].barh(1.1, int(pTERT_C228_seq_good), height=0.75, color='green')
+
+	axs[2,1].set_title('H3F3A')
+	axs[2,1].plot(H3F3A_K27x,H3F3A_K27Wt,color='green',linewidth=1,label=('K27 Wt '+ str(round(float(H3F3A_K27Wt_now),2)))+'%')
+	axs[2,1].plot(H3F3A_K27x,H3F3A_K27M,color='red',linewidth=1,label=('K27M '+ str(round(float(H3F3A_K27M_now),2)))+'%')
+	axs[2,1].plot(H3F3A_K27x,H3F3A_K27M,linewidth=0,label='---------------')
+	axs[2,1].plot(H3F3A_G34x,H3F3A_G34Wt,color='green',linewidth=1,linestyle='--',label=('G34 Wt '+ str(round(float(H3F3A_G34Wt_now),2)))+'%')
+	axs[2,1].plot(H3F3A_G34x,H3F3A_G34R_G403A,color='red',linewidth=1,linestyle='--',label=('G34R (G403A) '+ str(round(float(H3F3A_G34R_G403A_now),2)))+'%')
+	axs[2,1].plot(H3F3A_G34x,H3F3A_G34R_G403C,color='orangered',linewidth=1,linestyle='--',label=('G34R (G403C) '+ str(round(float(H3F3A_G34R_G403C_now),2)))+'%')
+	axs[2,1].plot(H3F3A_G34x,H3F3A_G34V,color='orange',linewidth=1,linestyle='--',label=('G34V '+ str(round(float(H3F3A_G34V_now),2)))+'%')
+	
+	axs[3,1].barh(0,(int(H3F3A_seq)/2), height=0.75, color='grey')
+	axs[3,1].barh(0, int(H3F3A_G34_seq_good), height=0.75, color='green')
+	axs[3,1].barh(1.1,(int(H3F3A_seq)/2), height=0.75, color='grey')
+	axs[3,1].barh(1.1, int(H3F3A_K27_seq_good), height=0.75, color='green')
+
+	axs[0,2].set_title('HIST1H3B')
+	axs[0,2].plot(HIST1H3B_K27x,HIST1H3B_K27Wt,color='green',linewidth=1,label=('K27 Wt '+ str(round(float(HIST1H3B_K27Wt_now),2)))+'%')
+	axs[0,2].plot(HIST1H3B_K27x,HIST1H3B_K27M,color='red',linewidth=1,label=('K27M '+ str(round(float(HIST1H3B_K27M_now),2)))+'%')
+
+	axs[1,2].barh(0,(int(HIST1H3B_seq)/2), height=0.75, color='grey')
+	axs[1,2].barh(0, int(HIST1H3B_K27_seq_good), height=0.75, color='green')
+
+	axs[2,2].set_title('BRAF')
+	axs[2,2].plot(BRAFx,BRAF_Wt,color='green',linewidth=1,label=('Wt '+ str(round(float(BRAF_Wt_now),2)))+'%')
+	axs[2,2].plot(BRAFx,BRAF_V600E,color='red',linewidth=1,label=('V600E '+ str(round(float(BRAF_V600E_now),2)))+'%')
+
+	axs[3,2].barh(0,(int(BRAF_seq)/2), height=0.75, color='grey')
+	axs[3,2].barh(0, int(BRAF_seq_good), height=0.75, color='green')
+
+
+	props = dict(boxstyle='round', facecolor='white', alpha=0)
+
+	try:
+		textstr_IDH1 = 'All mappings :\n'+str(IDH1_seq)+'\n\nGood mappings :\n'+str(IDH1_seq_good)+' = '+str(IDH1_ratio)+'%'
+		axs[1,0].text(1.05, 0, textstr_IDH1, fontsize=9, transform=axs[1,0].transAxes, bbox=props)
+	except:
+		pass
+
+	try:
+		textstr_IDH2 = 'All mappings :\n'+str(IDH2_seq)+'\n\nGood mappings :\n'+str(IDH2_seq_good)+' = '+str(IDH2_ratio)+'%'
+		axs[3,0].text(1.05, 0, textstr_IDH2, fontsize=9, transform=axs[3,0].transAxes, bbox=props)
+	except:
+		pass
+
+	try:
+		textstr_pTERT = 'All mappings :\n'+str(pTERT_seq)+'\n\nGood C228 map. :\n'+str(pTERT_C228_seq_good)+' = '+str(pTERT_C228_ratio)+'%'+'\n\nGood C250 map. :\n'+str(pTERT_C250_seq_good)+' = '+str(pTERT_C250_ratio)+'%'
+		axs[1,1].text(1.05, -0.1, textstr_pTERT, fontsize=9, transform=axs[1,1].transAxes, bbox=props)
+	except:
+		pass
+
+	try:
+		textstr_H3F3A = 'All mappings :\n'+str(H3F3A_seq)+'\n\nGood K27 map. :\n'+str(H3F3A_K27_seq_good)+' = '+str(H3F3A_K27_ratio)+'%'+'\n\nGood G34 map. :\n'+str(H3F3A_G34_seq_good)+' = '+str(H3F3A_G34_ratio)+'%'
+		axs[3,1].text(1.05, -0.1, textstr_H3F3A, fontsize=9, transform=axs[3,1].transAxes, bbox=props)
+	except:
+		pass
+
+	try:
+		textstr_HIST13B = 'All mappings :\n'+str(HIST1H3B_seq)+'\n\nGood K27 map. :\n'+str(HIST1H3B_K27_seq_good)+' = '+str(HIST1H3B_ratio)+'%'
+		axs[1,2].text(1.05, 0, textstr_HIST13B, fontsize=9, transform=axs[1,2].transAxes, bbox=props)
+	except:
+		pass
+	
+	try:
+		textstr_BRAF = 'All mappings :\n'+str(BRAF_seq)+'\n\nGood map. :\n'+str(BRAF_seq_good)+' = '+str(BRAF_ratio)+'%'
+		axs[3,2].text(1.05, -0.1, textstr_BRAF, fontsize=9, transform=axs[3,2].transAxes, bbox=props)
+	except:
+		pass
+	
+
+#	for ax in axs.flat:
+	for ax in [axs[0,0],axs[0,1],axs[0,2],axs[2,0],axs[2,1],axs[2,2]]:
+		ax.labelsize=14
+		ax.set(xlabel='Reads',ylabel='[%]')
+		ax.legend(bbox_to_anchor=(1, 1),loc='upper left',fontsize=9)
+		for tick in ax.xaxis.get_major_ticks():
+			tick.label.set_fontsize(9)
+		for tick in ax.yaxis.get_major_ticks():
+			tick.label.set_fontsize(9)
+		#axes = plt.gca()
+		ax.set_ylim([-1,101])
+
+	for ax in [axs[1,0],axs[1,1],axs[1,2],axs[3,0],axs[3,1],axs[3,2]]:
+		ax.grid(False)
+		for tick in ax.yaxis.get_major_ticks():
+			tick.label.set_fontsize(0)
+		
+
+
+
+
+style.use('fivethirtyeight')
+fig, axs = plt.subplots(4,3,figsize=(20,10),sharey=False,gridspec_kw={'height_ratios': [5, 1, 5, 1]}) #, sharex=True)
+
+
+ani = animation.FuncAnimation(fig,animate,interval=200)
+#ani.save('ani.gif', writer='imagemagick', fps=3)
+plt.show() 
+
+#_______________________________________________________________________________________________________________________________________________________
+#Create a static plot with the generated data from animate. Don't show, only save it
+
+fig, axs = plt.subplots(4,3,figsize=(20,10),sharey=False,gridspec_kw={'height_ratios': [5, 1, 5, 1]})
+plt.tight_layout()
+plt.subplots_adjust(left=0.05,right=0.875,top=0.9,bottom=0.1,wspace=1,hspace=0.75)
+plt.suptitle(datetime.timedelta(seconds=round(int(runtime),0)),y=0.5)
+
+
+axs[0,0].clear()
+axs[0,1].clear()
+axs[0,2].clear()
+axs[1,0].clear()
+axs[1,1].clear()
+axs[1,2].clear()
+axs[2,0].clear()
+axs[2,1].clear()
+axs[2,2].clear()
+axs[3,0].clear()
+axs[3,1].clear()
+axs[3,2].clear()
+
+if IDH1_seq_good == 0:
+	axs[0,0].set_visible(False)
+	axs[1,0].set_visible(False)
+else:
+	axs[0,0].set_visible(True)
+	axs[1,0].set_visible(True)
+
+if IDH2_seq_good == 0:
+	axs[2,0].set_visible(False)
+	axs[3,0].set_visible(False)
+else:
+	axs[2,0].set_visible(True)
+	axs[3,0].set_visible(True)
+
+if pTERT_C228_seq_good == 0 and pTERT_C250_seq_good == 0:
+	axs[0,1].set_visible(False)
+	axs[1,1].set_visible(False)
+else:
+	axs[0,1].set_visible(True)
+	axs[1,1].set_visible(True)
+
+if H3F3A_K27_seq_good == 0 and H3F3A_G34_seq_good == 0:
+	axs[2,1].set_visible(False)
+	axs[3,1].set_visible(False)
+else:
+	axs[2,1].set_visible(True)
+	axs[3,1].set_visible(True)
+
+if HIST1H3B_K27_seq_good == 0:
+	axs[0,2].set_visible(False)
+	axs[1,2].set_visible(False)
+else:
+	axs[0,2].set_visible(True)
+	axs[1,2].set_visible(True)
+
+if BRAF_seq_good == 0:
+	axs[2,2].set_visible(False)
+	axs[3,2].set_visible(False)
+else:
+	axs[2,2].set_visible(True)
+	axs[3,2].set_visible(True)
+	
+axs[0,0].set_title('IDH1')
+axs[0,0].plot(IDH1_x,IDH1_Wt,color='green',linewidth=1,label=('Wt '+ str(round(float(IDH1_Wt_now),2)))+'%')
+axs[0,0].plot(IDH1_x,IDH1_R132H,color='red',linewidth=1,label=('R132H '+ str(round(float(IDH1_R132H_now),2)))+'%')
+axs[0,0].plot(IDH1_x,IDH1_R132L,color='orangered',linewidth=1,label=('R132L '+ str(round(float(IDH1_R132L_now),2)))+'%')
+axs[0,0].plot(IDH1_x,IDH1_R132C,color='tomato',linewidth=1,label=('R132C '+ str(round(float(IDH1_R132C_now),2)))+'%')
+axs[0,0].plot(IDH1_x,IDH1_R132S,color='orange',linewidth=1,label=('R132S '+ str(round(float(IDH1_R132S_now),2)))+'%')
+axs[0,0].plot(IDH1_x,IDH1_R132G,color='gold',linewidth=1,label=('R132G '+ str(round(float(IDH1_R132G_now),2)))+'%')
+
+axs[1,0].barh(0,(int(IDH1_seq)/2), height=0.75, color='grey')
+axs[1,0].barh(0, int(IDH1_seq_good), height=0.75, color='green')
+
+axs[2,0].set_title('IDH2')
+axs[2,0].plot(IDH2_x,IDH2_Wt,color='green',linewidth=1,label=('Wt '+ str(round(float(IDH2_Wt_now),2)))+'%')
+axs[2,0].plot(IDH2_x,IDH2_R172G,color='red',linewidth=1,label=('R172G '+ str(round(float(IDH2_R172G_now),2)))+'%')
+axs[2,0].plot(IDH2_x,IDH2_R172K,color='orangered',linewidth=1,label=('R172K '+ str(round(float(IDH2_R172K_now),2)))+'%')
+axs[2,0].plot(IDH2_x,IDH2_R172M,color='tomato',linewidth=1,label=('R172M '+ str(round(float(IDH2_R172M_now),2)))+'%')
+axs[2,0].plot(IDH2_x,IDH2_R172W,color='orange',linewidth=1,label=('R172W '+ str(round(float(IDH2_R172W_now),2)))+'%')
+
+axs[3,0].barh(0,(int(IDH2_seq)/2), height=0.75, color='grey')
+axs[3,0].barh(0, int(IDH2_seq_good), height=0.75, color='green')
+
+axs[0,1].set_title('pTERT')
+axs[0,1].plot(pTERT_C228x,pTERT_C228Wt,color='green',linewidth=1,label=('C228 Wt '+ str(round(float(pTERT_C228Wt_now),2)))+'%')
+axs[0,1].plot(pTERT_C228x,pTERT_C228T,color='red',linewidth=1,label=('C228T '+ str(round(float(pTERT_C228T_now),2)))+'%')
+axs[0,1].plot(pTERT_C228x,pTERT_C228T,linewidth=0,label='---------------')
+axs[0,1].plot(pTERT_C250x,pTERT_C250Wt,color='green',linewidth=1,linestyle='--',label=('C250 Wt '+ str(round(float(pTERT_C250Wt_now),2)))+'%')
+axs[0,1].plot(pTERT_C250x,pTERT_C250T,color='red',linewidth=1,linestyle='--',label=('C250T '+ str(round(float(pTERT_C250T_now),2)))+'%')
+	
+axs[1,1].barh(0,(int(pTERT_seq)/2), height=0.75, color='grey')
+axs[1,1].barh(0, int(pTERT_C250_seq_good), height=0.75, color='green')
+axs[1,1].barh(1.1,(int(pTERT_seq)/2), height=0.75, color='grey')
+axs[1,1].barh(1.1, int(pTERT_C228_seq_good), height=0.75, color='green')
+
+axs[2,1].set_title('H3F3A')
+axs[2,1].plot(H3F3A_K27x,H3F3A_K27Wt,color='green',linewidth=1,label=('K27 Wt '+ str(round(float(H3F3A_K27Wt_now),2)))+'%')
+axs[2,1].plot(H3F3A_K27x,H3F3A_K27M,color='red',linewidth=1,label=('K27M '+ str(round(float(H3F3A_K27M_now),2)))+'%')
+axs[2,1].plot(H3F3A_K27x,H3F3A_K27M,linewidth=0,label='---------------')
+axs[2,1].plot(H3F3A_G34x,H3F3A_G34Wt,color='green',linewidth=1,linestyle='--',label=('G34 Wt '+ str(round(float(H3F3A_G34Wt_now),2)))+'%')
+axs[2,1].plot(H3F3A_G34x,H3F3A_G34R_G403A,color='red',linewidth=1,linestyle='--',label=('G34R (G403A) '+ str(round(float(H3F3A_G34R_G403A_now),2)))+'%')
+axs[2,1].plot(H3F3A_G34x,H3F3A_G34R_G403C,color='orangered',linewidth=1,linestyle='--',label=('G34R (G403C) '+ str(round(float(H3F3A_G34R_G403C_now),2)))+'%')
+axs[2,1].plot(H3F3A_G34x,H3F3A_G34V,color='orange',linewidth=1,linestyle='--',label=('G34V '+ str(round(float(H3F3A_G34V_now),2)))+'%')
+	
+axs[3,1].barh(0,(int(H3F3A_seq)/2), height=0.75, color='grey')
+axs[3,1].barh(0, int(H3F3A_G34_seq_good), height=0.75, color='green')
+axs[3,1].barh(1.1,(int(H3F3A_seq)/2), height=0.75, color='grey')
+axs[3,1].barh(1.1, int(H3F3A_K27_seq_good), height=0.75, color='green')
+
+axs[0,2].set_title('HIST1H3B')
+axs[0,2].plot(HIST1H3B_K27x,HIST1H3B_K27Wt,color='green',linewidth=1,label=('K27 Wt '+ str(round(float(HIST1H3B_K27Wt_now),2)))+'%')
+axs[0,2].plot(HIST1H3B_K27x,HIST1H3B_K27M,color='red',linewidth=1,label=('K27M '+ str(round(float(HIST1H3B_K27M_now),2)))+'%')
+
+axs[1,2].barh(0,(int(HIST1H3B_seq)/2), height=0.75, color='grey')
+axs[1,2].barh(0, int(HIST1H3B_K27_seq_good), height=0.75, color='green')
+
+axs[2,2].set_title('BRAF')
+axs[2,2].plot(BRAFx,BRAF_Wt,color='green',linewidth=1,label=('Wt '+ str(round(float(BRAF_Wt_now),2)))+'%')
+axs[2,2].plot(BRAFx,BRAF_V600E,color='red',linewidth=1,label=('V600E '+ str(round(float(BRAF_V600E_now),2)))+'%')
+
+axs[3,2].barh(0,(int(BRAF_seq)/2), height=0.75, color='grey')
+axs[3,2].barh(0, int(BRAF_seq_good), height=0.75, color='green')
+
+
+props = dict(boxstyle='round', facecolor='white', alpha=0)
+
+try:
+	textstr_IDH1 = 'All mappings :\n'+str(IDH1_seq)+'\n\nGood mappings :\n'+str(IDH1_seq_good)+' = '+str(IDH1_ratio)+'%'
+	axs[1,0].text(1.05, 0, textstr_IDH1, fontsize=9, transform=axs[1,0].transAxes, bbox=props)
+except:
+	pass
+
+try:
+	textstr_IDH2 = 'All mappings :\n'+str(IDH2_seq)+'\n\nGood mappings :\n'+str(IDH2_seq_good)+' = '+str(IDH2_ratio)+'%'
+	axs[3,0].text(1.05, 0, textstr_IDH2, fontsize=9, transform=axs[3,0].transAxes, bbox=props)
+except:
+	pass
+
+try:
+	textstr_pTERT = 'All mappings :\n'+str(pTERT_seq)+'\n\nGood C228 map. :\n'+str(pTERT_C228_seq_good)+' = '+str(pTERT_C228_ratio)+'%'+'\n\nGood C250 map. :\n'+str(pTERT_C250_seq_good)+' = '+str(pTERT_C250_ratio)+'%'
+	axs[1,1].text(1.05, -0.1, textstr_pTERT, fontsize=9, transform=axs[1,1].transAxes, bbox=props)
+except:
+	pass
+
+try:
+	textstr_H3F3A = 'All mappings :\n'+str(H3F3A_seq)+'\n\nGood K27 map. :\n'+str(H3F3A_K27_seq_good)+' = '+str(H3F3A_K27_ratio)+'%'+'\n\nGood G34 map. :\n'+str(H3F3A_G34_seq_good)+' = '+str(H3F3A_G34_ratio)+'%'
+	axs[3,1].text(1.05, -0.1, textstr_H3F3A, fontsize=9, transform=axs[3,1].transAxes, bbox=props)
+except:
+	pass
+
+try:
+	textstr_HIST13B = 'All mappings :\n'+str(HIST1H3B_seq)+'\n\nGood K27 map. :\n'+str(HIST1H3B_K27_seq_good)+' = '+str(HIST1H3B_ratio)+'%'
+	axs[1,2].text(1.05, 0, textstr_HIST13B, fontsize=9, transform=axs[1,2].transAxes, bbox=props)
+except:
+	pass
+	
+try:
+	textstr_BRAF = 'All mappings :\n'+str(BRAF_seq)+'\n\nGood map. :\n'+str(BRAF_seq_good)+' = '+str(BRAF_ratio)+'%'
+	axs[3,2].text(1.05, -0.1, textstr_BRAF, fontsize=9, transform=axs[3,2].transAxes, bbox=props)
+except:
+	pass
+	
+
+#for ax in axs.flat:
+for ax in [axs[0,0],axs[0,1],axs[0,2],axs[2,0],axs[2,1],axs[2,2]]:
+	ax.labelsize=14
+	ax.set(xlabel='Reads',ylabel='[%]')
+	ax.legend(bbox_to_anchor=(1, 1),loc='upper left',fontsize=9)
+	for tick in ax.xaxis.get_major_ticks():
+		tick.label.set_fontsize(9)
+	for tick in ax.yaxis.get_major_ticks():
+		tick.label.set_fontsize(9)
+	#axes = plt.gca()
+	ax.set_ylim([-1,101])
+
+for ax in [axs[1,0],axs[1,1],axs[1,2],axs[3,0],axs[3,1],axs[3,2]]:
+	ax.grid(False)
+	for tick in ax.yaxis.get_major_ticks():
+		tick.label.set_fontsize(0)
+
+#axes = plt.gca()
+#axes.set_ylim([-1,101])
+
+plt.savefig(sys.argv[1]+'_Report.png',dpi=200)
+#plt.show() 
+
+
+#__________________________________________________________________________________________________________failed tests
+def add_subplot_zoom(figure):
+
+    # temporary store for the currently zoomed axes. Use a list to work around
+    # python's scoping rules
+    zoomed_axes = [None]
+
+    def on_click(event):
+        ax = event.inaxes
+
+        if ax is None:
+            # occurs when a region not in an axis is clicked...
+            return
+
+        # we want to allow other navigation modes as well. Only act in case
+        # shift was pressed and the correct mouse button was used
+        if event.key != 'shift' or event.button != 1:
+            return
+
+        if zoomed_axes[0] is None:
+            # not zoomed so far. Perform zoom
+
+            # store the original position of the axes
+            zoomed_axes[0] = (ax, ax.get_position())
+            ax.set_position([0.1, 0.1, 0.85, 0.85])
+
+            # hide all the other axes...
+            for axis in event.canvas.figure.axes:
+                if axis is not ax:
+                    axis.set_visible(False)
+
+        else:
+            # restore the original state
+
+            zoomed_axes[0][0].set_position(zoomed_axes[0][1])
+            zoomed_axes[0] = None
+
+            # make other axes visible again
+            for axis in event.canvas.figure.axes:
+                axis.set_visible(True)
+
+        # redraw to make changes visible.
+        event.canvas.draw()
+
+    figure.canvas.mpl_connect('button_press_event', on_click)
+
+
+#fig = plt.figure()
+#ax = fig.add_subplot(111)
+##
+#ani = animation.FuncAnimation(fig,animate,interval=200)
+#ax.plot(H3F3A_K27x,H3F3A_K27Wt,color='green',linewidth=1,label=('K27 Wt '+ str(round(float(H3F3A_K27Wt_now),2)))+'%')
+
+#n = len(fig.axes)
+#for i in range(n):
+#    fig.axes[i].change_geometry(n+1, 2, i+1)
+
+# add the new
+#ax = fig.add_subplot(n+1, 2, n+1)
+#ax.plot([4,5,6])
+#plt.show()
+
+#__________________________________________________________________________________________________________________________failed test end
+
+

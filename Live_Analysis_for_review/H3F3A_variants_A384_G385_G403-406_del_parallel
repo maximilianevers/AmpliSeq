@@ -1,0 +1,43 @@
+#!/bin/sh
+
+
+f=$1
+
+analyze() {
+	
+	minimap2 -a --cs ~/Desktop/Live_analysis/H3F3A_A384del_G385del_G403-406del_908bp.fasta $f > H3F3A_results_A384del_G385del_G403-406del_par/raw/alignment_$f.sam && 
+	paftools.js sam2paf H3F3A_results_A384del_G385del_G403-406del_par/raw/alignment_$f.sam > H3F3A_results_A384del_G385del_G403-406del_par/raw/alignment_$f.paf && 
+	sort -k6,6 -k8,8n H3F3A_results_A384del_G385del_G403-406del_par/raw/alignment_$f.paf > H3F3A_results_A384del_G385del_G403-406del_par/raw/aln.srt_$f.paf && 
+	paftools.js call -l 50 -L 50 H3F3A_results_A384del_G385del_G403-406del_par/raw/aln.srt_$f.paf > H3F3A_results_A384del_G385del_G403-406del_par/raw/aln.var_$f.csv
+	
+}
+
+
+
+analyze > /dev/null 2>&1 #&
+
+
+cd H3F3A_results_A384del_G385del_G403-406del_par/raw
+
+
+awk -F,awk -F '\t' '{print $1,$9,$3,$4,$5,$6,$7,$8,$2,$10,$11,$12}' OFS=, aln.var_$f.csv > aln.var_$f.csv.srt.csv #&
+
+r=aln.var_$f.csv.srt.csv
+
+python3 ~/Desktop/Live_analysis/H3F3A_count_variants_pos384-385_403-406_del_par "$r" # 2> /dev/null #&
+
+
+#cat *_count_H3F3A.csv > ../H3F3A_results_unsum.csv 2> /dev/null
+
+#cd ../
+#python3 ~/Desktop/ME/Test_structure/H3F3A_summarize_variants_A384_G403_G404_par 2> /dev/null | tee H3F3A_results_deletion_mapping_A384_G403_G404.txt
+
+#end=`date +%s`
+#runtime=$((end-start))
+
+#echo H3F3A analysis took $runtime s.
+
+
+
+
+

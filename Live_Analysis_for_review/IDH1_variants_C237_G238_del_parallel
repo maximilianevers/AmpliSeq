@@ -1,0 +1,48 @@
+#!/bin/sh
+
+
+f=$1 
+
+analyze() {
+	
+	minimap2 -a --cs ~/Desktop/Live_analysis/IDH1_C237del_G238del_960bp.fasta $f > IDH1_results_C237del_G238del_par/raw/alignment_$f.sam && 
+	paftools.js sam2paf IDH1_results_C237del_G238del_par/raw/alignment_$f.sam > IDH1_results_C237del_G238del_par/raw/alignment_$f.paf && 
+	sort -k6,6 -k8,8n IDH1_results_C237del_G238del_par/raw/alignment_$f.paf > IDH1_results_C237del_G238del_par/raw/aln.srt_$f.paf && 
+	paftools.js call -l 100 -L 100 IDH1_results_C237del_G238del_par/raw/aln.srt_$f.paf > IDH1_results_C237del_G238del_par/raw/aln.var_$f.csv
+	
+}
+
+
+
+analyze > /dev/null #2>&1 #&
+	
+
+
+
+cd IDH1_results_C237del_G238del_par/raw
+
+
+awk -F,awk -F '\t' '{print $1,$9,$3,$4,$5,$6,$7,$8,$2,$10,$11,$12}' OFS=, aln.var_$f.csv > aln.var_$f.csv.srt.csv #&
+
+
+r=aln.var_$f.csv.srt.csv
+
+python3 ~/Desktop/Live_analysis/IDH1_count_variants_pos237-238_del_par "$r" #2> /dev/null #&
+
+#cd ../
+#python3 ~/Desktop/ME/Test_structure/show_IDH1
+
+#cat *_count_IDH1.csv > ../IDH1_results_unsum.csv 2> /dev/null
+
+#cd ../
+#python3 ~/Desktop/ME/Test_structure/IDH1_summarize_variants_C237_G238_par 2> /dev/null | tee IDH1_results_deletion_mapping_C237_G238.txt
+
+#end=`date +%s`
+#runtime=$((end-start))
+
+#echo IDH1 analysis took $runtime s.
+
+
+
+
+

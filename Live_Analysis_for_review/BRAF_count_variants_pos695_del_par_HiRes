@@ -1,0 +1,107 @@
+#Calculating abundancy of the queried variant
+
+num_seq=1
+pos695_num_good=0
+pos695_num_bad=0
+num_pos695_A=0
+rel_pos695_A=0
+num_pos695_T=0
+rel_pos695_T=0
+l=0
+
+
+
+import csv
+import sys
+
+with open(sys.argv[1], newline='') as f:
+	readCSV = csv.reader (f, delimiter=',')
+	for row in readCSV:
+
+		if row[2] == '690' and row[3] == '690' and row[6] == '-':
+			if str(row[7]).count('cac') == 1:
+				num_pos695_A+=1
+
+		
+		if row[2] == '690' and row[3] == '690' and row[6] == '-':
+			if str(row[7]).count('ctc') == 1:
+				num_pos695_T+=1
+
+
+
+#		if row[2] == '690' and row[3] == '690' and row[6] == '-' and row[7] in ['a']:#,'aa']:
+#			num_pos695_A+=1
+#
+#		
+#		if row[2] == '690' and row[3] == '690' and row[6] == '-' and row[7] in ['t','tg']:
+#			num_pos695_T+=1
+#
+#
+
+		if int(row[2]) < int(l) and row[2] != "":
+			pos695_num_good = num_pos695_A + num_pos695_T 
+			pos695_num_bad = num_seq - pos695_num_good
+		
+			try:
+				rel_pos695_A=round(num_pos695_A/pos695_num_good*100, 2)
+				rel_pos695_T=round(num_pos695_T/pos695_num_good*100, 2)
+			except:
+				pass
+			
+			with open('Test_count_BRAF_individual.csv', 'a+') as q:
+				writer=csv.writer(q, delimiter=',')
+				writer.writerow([num_seq,pos695_num_good,pos695_num_bad,num_pos695_A,rel_pos695_A,num_pos695_T,rel_pos695_T])
+			
+			num_seq+=1
+
+		l = row[2]
+
+
+
+#pos695_num_good = num_pos695_A + num_pos695_T 
+#pos695_num_bad = num_seq - pos695_num_good
+
+
+
+
+#with open(sys.argv[1]+'_count_BRAF.csv', 'w') as q:
+#	writer=csv.writer(q, delimiter=',')
+#	writer.writerow([num_seq,pos695_num_good,pos695_num_bad,num_pos695_A,num_pos695_T])
+
+
+#with open('../BRAF_graph.csv','r') as j: 
+#	reader=csv.reader(j, delimiter=',')
+#	for row in reader:pass
+#	try:
+#		num_seq+=int(row[0])
+#		pos695_num_good+=int(row[1])
+#		pos695_num_bad+=int(row[2])
+#		num_pos695_A+=int(row[3])
+#		num_pos695_T+=int(row[5])
+#		
+#	except:
+#		pass
+#	
+#	rel_pos695_A=num_pos695_A/pos695_num_good*100
+#	rel_pos695_T=num_pos695_T/pos695_num_good*100
+#	
+#
+#	with open('../BRAF_graph.csv', 'a+') as f:
+#		writer=csv.writer(f, delimiter=',')
+#		writer.writerow([num_seq,pos695_num_good,pos695_num_bad,num_pos695_A,rel_pos695_A,num_pos695_T,rel_pos695_T])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+
+f=$1
+
+analyze() {
+	
+	minimap2 -a --cs ~/Desktop/Live_analysis/IDH2_C697del_T698del_988bp.fasta $f > IDH2_results_C697del_T698del_par/raw/alignment_$f.sam && 
+	paftools.js sam2paf IDH2_results_C697del_T698del_par/raw/alignment_$f.sam > IDH2_results_C697del_T698del_par/raw/alignment_$f.paf && 
+	sort -k6,6 -k8,8n IDH2_results_C697del_T698del_par/raw/alignment_$f.paf > IDH2_results_C697del_T698del_par/raw/aln.srt_$f.paf && 
+	paftools.js call -l 100 -L 100 IDH2_results_C697del_T698del_par/raw/aln.srt_$f.paf > IDH2_results_C697del_T698del_par/raw/aln.var_$f.csv
+	
+}
+
+
+analyze > /dev/null 2>&1 #&
+
+
+cd IDH2_results_C697del_T698del_par/raw
+
+
+awk -F,awk -F '\t' '{print $1,$9,$3,$4,$5,$6,$7,$8,$2,$10,$11,$12}' OFS=, aln.var_$f.csv > aln.var_$f.csv.srt.csv #&
+
+
+r=aln.var_$f.csv.srt.csv
+
+python3 ~/Desktop/Live_analysis/IDH2_count_variants_pos697-698_del_par_HiRes "$r" #2> /dev/null #&
+
+
+
+#cat *_count_IDH2.csv > ../IDH2_results_unsum.csv 2> /dev/null
+
+#cd ../
+#python3 ~/Desktop/ME/Test_structure/IDH2_summarize_variants_C697_T698_par 2> /dev/null | tee Results_deletion_mapping_C697_T698.txt
+
+
+
+
+
+

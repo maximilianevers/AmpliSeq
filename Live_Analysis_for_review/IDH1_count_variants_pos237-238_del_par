@@ -1,0 +1,122 @@
+#Calculating abundancy of the queried variant
+
+num_seq=1
+num_good=0
+num_bad=0
+num_CG=0
+rel_CG=0
+num_TG=0
+rel_TG=0
+num_AG=0
+rel_AG=0
+num_CA=0
+rel_CA=0
+num_CT=0
+rel_CT=0
+num_CC=0
+rel_CC=0
+l=0
+
+
+
+import csv
+import sys
+
+with open(sys.argv[1], newline='') as f:
+	readCSV = csv.reader (f, delimiter=',')
+	for row in readCSV:
+
+
+		if row[2] == '236' and row[3] == '236' and row[6] == '-' and row[7] == 'cg':
+			num_CG+=1
+
+		if row[2] == '236' and row[3] == '236' and row[6] == '-' and row[7] == 'tg':
+			num_TG+=1
+
+		if row[2] == '236' and row[3] == '236' and row[6] == '-' and row[7] == 'ag':
+			num_AG+=1
+
+		if row[2] == '235' and row[3] == '235' and row[6] == '-' and row[7] == 'ac':
+			num_CA+=1
+
+		if row[2] == '236' and row[3] == '236' and row[6] == '-' and row[7] == 'ct':
+			num_CT+=1
+
+		if row[2] == '236' and row[3] == '236' and row[6] == '-' and row[7] == 'cc':
+			num_CC+=1
+
+
+
+		if int(row[2]) < int(l) and row[2] != "":
+			num_seq+=1
+
+		l = row[2]
+
+
+ratioCG = round(num_CG/num_seq*100, 2)
+ratioTG = round(num_TG/num_seq*100, 2)
+ratioAG = round(num_AG/num_seq*100, 2)
+ratioCA = round(num_CA/num_seq*100, 2)
+ratioCT = round(num_CT/num_seq*100, 2)
+ratioCC = round(num_CC/num_seq*100, 2)
+sum_ratio = ratioCG + ratioTG + ratioAG + ratioCA + ratioCT + ratioCC
+
+num_good = num_CG + num_TG + num_AG + num_CA + num_CT + num_CC
+num_bad = num_seq - num_good
+
+
+n_ratioCG = round(ratioCG/sum_ratio*100, 2)
+n_ratioTG = round(ratioTG/sum_ratio*100, 2)
+n_ratioAG = round(ratioAG/sum_ratio*100, 2)
+n_ratioCA = round(ratioCA/sum_ratio*100, 2)
+n_ratioCT = round(ratioCT/sum_ratio*100, 2)
+n_ratioCC = round(ratioCC/sum_ratio*100, 2)
+
+with open(sys.argv[1]+'_count_IDH1.csv', 'w') as q:
+	writer=csv.writer(q, delimiter=',')
+	writer.writerow([num_seq,num_good,num_bad,num_CG,num_TG,num_AG,num_CA,num_CT,num_CC])
+
+with open('../IDH1_graph.csv','r') as j: 
+	reader=csv.reader(j, delimiter=',')
+	for row in reader:pass
+	try:
+		num_seq+=int(row[0])
+		num_good+=int(row[1])
+		num_bad+=int(row[2])
+		num_CG+=int(row[3])
+		num_TG+=int(row[5])
+		num_AG+=int(row[7])
+		num_CA+=int(row[9])
+		num_CT+=int(row[11])
+		num_CC+=int(row[13])
+	except:
+		pass
+
+	rel_CG=(num_CG/num_good)*100
+	rel_TG=(num_TG/num_good)*100
+	rel_AG=(num_AG/num_good)*100
+	rel_CA=(num_CA/num_good)*100
+	rel_CT=(num_CT/num_good)*100
+	rel_CC=(num_CC/num_good)*100
+
+
+	with open('../IDH1_graph.csv', 'a+') as f:
+		writer=csv.writer(f, delimiter=',')
+		writer.writerow([num_seq,num_good,num_bad,num_CG,rel_CG,num_TG,rel_TG,num_AG,rel_AG,num_CA,rel_CA,num_CT,rel_CT,num_CC,rel_CC])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,187 @@
+#Calculating abundancy of the queried variant
+
+num_seq=1
+num_good=0
+num_bad=0
+Pos843_A_counter=0
+Pos865_A_counter=0
+pos843_num_AA=0
+pos843_rel_AA=0
+pos843_num_A=0
+pos843_rel_A=0
+pos865_num_AA=0
+pos865_rel_AA=0
+pos865_num_A=0
+pos865_rel_A=0
+l=0
+last_pos=0
+
+Seq_ID=0
+Seq_List_A=[]
+Seq_List_AA=[]
+
+consecutive_pos843=True
+consecutive_pos865=True
+last_A_pos=0
+
+
+
+import csv
+import sys
+with open(sys.argv[1], newline='') as f:
+	readCSV = csv.reader (f, delimiter=',')
+	for row in readCSV:
+
+
+		if int(row[3]) in list(range(186,192)):
+			#Seq_ID = row[1]
+			
+			if row[7] == 'a':
+				Pos843_A_counter+=1
+				if last_A_pos == 0:
+					last_A_pos = int(row[3])
+				if last_A_pos != 0:
+					if int(row[3]) - int(last_A_pos) > 1:
+						consecutive_pos843 = False
+			if row[7] == 'aa':
+				Pos843_A_counter+=2
+
+
+		if int(row[3]) in list(range(208,214)):
+			
+			if row[7] == 'a':
+				Pos865_A_counter+=1
+				if last_A_pos == 0 or last_A_pos in range(186,192):
+					last_A_pos = int(row[3])
+				if last_A_pos != 0:
+					if int(row[3]) - int(last_A_pos) > 1:
+						consecutive_pos865 = False
+			if row[7] == 'aa':
+				Pos865_A_counter+=2
+
+#		if row[2] == '842' and row[3] == '842' and row[6] == '-' and row[7] == 't':
+#			num_T843+=1
+#
+#		if row[2] == '840' and row[3] == '841' and row[6] == 'g' and row[7] == 'a':
+#			pos843_num_A843+=1
+#
+#		if row[2] == '842' and row[3] == '842' and row[6] == '-' and row[7] == 'a':
+#			pos843_num_A843+=1
+#		
+#		if row[2] == '842' and row[3] == '843' and row[6] == 'g' and row[7] == 'a':
+#			pos843_num_A843+=1
+#
+#		if row[2] == '841' and row[3] == '841' and row[6] == '-' and row[7] == 'a':
+#			pos843_num_A843+=1
+#
+#		if row[2] == '842' and row[3] == '843' and row[6] == 'g' and row[7] == '-':
+#			current_sequence = row[1]
+#		if current_sequence == row[1] and row[2] == '843' and row[3] == '844' and row[6] == 'g' and row[7] == 'a':
+#			pos843_num_A843+=1
+#
+#		if row[2] == '842' and row[3] == '842' and row[6] == '-' and row[7] == 'g':
+#			num_G843+=1
+#
+#		if row[2] == '842' and row[3] == '843' and row[6] == 'g' and row[7] == '-':
+#			num_del1+=1
+#
+#		if row[2] == '842' and row[3] == '844' and row[6] == 'gg' and row[7] == '-':
+#			num_del2+=1
+
+		
+		if int(row[2]) < int(l) and row[2] != "":
+			num_seq+=1
+			if consecutive_pos843 == True:
+				if Pos843_A_counter == 1:
+					pos843_num_A+=1
+					#Seq_List_A.append(Seq_ID)
+	
+				if Pos843_A_counter == 2:
+					pos843_num_AA+=1
+					#Seq_List_AA.append(Seq_ID)
+	
+			if consecutive_pos865 == True:
+				if Pos865_A_counter == 1:
+					pos865_num_A+=1
+
+				if Pos865_A_counter == 2:
+					pos865_num_AA+=1
+
+			Pos843_A_counter=0
+			Pos865_A_counter=0
+			consecutive_pos843=True
+			consecutive_pos865=True
+			#print(last_A_pos)
+			last_A_pos=0
+
+		l = row[2]
+
+
+
+
+#ratioA = round(pos843_num_A/num_seq*100, 2)
+#ratioAA = round(pos843_num_AA/num_seq*100, 2)
+
+#sum_ratio = ratioA + ratioAA
+
+pos843_num_good = pos843_num_A + pos843_num_AA
+pos843_num_bad = num_seq - pos843_num_good
+
+pos865_num_good = pos865_num_A + pos865_num_AA
+pos865_num_bad = num_seq - pos865_num_good
+
+
+
+#n_ratioA = round(ratioA/sum_ratio*100, 2)
+#n_ratioAA = round(ratioAA/sum_ratio*100, 2)
+
+#print(Seq_List_A, Seq_List_AA)
+
+with open(sys.argv[1]+'_count_pTERT.csv', 'w') as q:
+	writer=csv.writer(q, delimiter=',')
+	writer.writerow([num_seq,pos843_num_good,pos843_num_bad,pos843_num_A,pos843_num_AA,pos865_num_good,pos865_num_bad,pos865_num_A,pos865_num_AA])
+
+
+with open('../pTERT_graph.csv','r') as j: 
+	reader=csv.reader(j, delimiter=',')
+	for row in reader:pass
+	try:
+		num_seq+=int(row[0])
+		pos843_num_good+=int(row[1])
+		pos843_num_bad+=int(row[2])
+		pos843_num_A+=int(row[3])
+		pos843_num_AA+=int(row[5])
+		pos865_num_good+=int(row[7])
+		pos865_num_bad+=int(row[8])
+		pos865_num_A+=int(row[9])
+		pos865_num_AA+=int(row[11])
+	except:
+		pass
+
+	pos843_rel_A=pos843_num_A/pos843_num_good*100
+	pos843_rel_AA=pos843_num_AA/pos843_num_good*100
+	pos865_rel_A=pos865_num_A/pos865_num_good*100
+	pos865_rel_AA=pos865_num_AA/pos865_num_good*100
+	
+
+	with open('../pTERT_graph.csv', 'a+') as f:
+		writer=csv.writer(f, delimiter=',')
+		writer.writerow([num_seq,pos843_num_good,pos843_num_bad,pos843_num_A,pos843_rel_A,pos843_num_AA,pos843_rel_AA,
+				pos865_num_good,pos865_num_bad,pos865_num_A,pos865_rel_A,pos865_num_AA,pos865_rel_AA])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

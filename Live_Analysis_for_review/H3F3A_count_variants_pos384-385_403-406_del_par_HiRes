@@ -1,0 +1,195 @@
+#Calculating abundancy of the queried variant
+
+num_seq=1
+pos384_num_good=0
+pos384_num_bad=0
+pos403_num_good=0
+pos403_num_bad=0
+#num_Wt=0
+num_pos384_A=0
+rel_pos384_A=0
+num_pos384_T=0
+rel_pos384_T=0
+num_pos403_GG=0
+rel_pos403_GG=0
+num_pos403_AG=0
+rel_pos403_AG=0
+num_pos403_CG=0
+rel_pos403_CG=0
+num_pos403_GT=0
+rel_pos403_GT=0
+l=0
+
+
+
+import csv
+import sys
+
+with open(sys.argv[1], newline='') as f:
+	readCSV = csv.reader (f, delimiter=',')
+	for row in readCSV:
+
+
+		if row[2] == '382' and row[3] == '382' and row[6] == '-' and row[7] in ['a']:#,'aa']:
+			num_pos384_A+=1
+
+		if row[2] == '383' and row[3] == '383' and row[6] == '-' and row[7] in ['g','ag','aag']:
+			num_pos384_A+=1
+
+		#if row[2] == '382' and row[3] == '383' and row[6] == 'g' and row[7] == 'a':
+		#	num_pos384_A+=1
+
+
+		#if row[2] == '382' and row[3] == '382' and row[6] == '-' and row[7] == 'at':
+		#	num_pos384_T+=1
+
+		if row[2] == '383' and row[3] == '383' and row[6] == '-' and row[7] in ['t','tg']:
+			num_pos384_T+=1
+
+		#if row[2] == '382' and row[3] == '383' and row[6] == 'g' and row[7] == 't':
+		#	num_pos384_T+=1
+
+
+		if row[2] == '401' and row[3] == '401' and row[6] == '-' and row[7] in ['ggg','gggg']:
+			num_pos403_GG+=1
+
+
+		if row[2] == '401' and row[3] == '401' and row[6] == '-' and row[7] in ['ag','agg','aggg']:
+			num_pos403_AG+=1
+
+		if row[2] == '400' and row[3] == '400' and row[6] == '-' and row[7] == 'a':
+			num_pos403_AG+=1
+
+		if row[2] == '398' and row[3] == '398' and row[6] == '-' and row[7] == 'gaa':
+			num_pos403_AG+=1
+
+		if row[2] == '399' and row[3] == '399' and row[6] == '-' and row[7] == 'aa':
+			num_pos403_AG+=1
+
+		if row[2] == '399' and row[3] == '400' and row[6] == 'g' and row[7] == 'a':
+			num_pos403_AG+=1
+
+#		if row[2] == '401' and row[3] == '402' and row[6] == 'g' and row[7] == 'a':
+#			num_pos403_AG+=1
+
+
+		if row[2] == '401' and row[3] == '401' and row[6] == '-' and row[7] in ['cggg','cgg','cagg']:
+			num_pos403_CG+=1
+
+
+		if row[2] == '401' and row[3] == '401' and row[6] == '-' and row[7] in ['gt','gtg','gtgg','gtggg']:
+			num_pos403_GT+=1
+
+		if row[2] == '399' and row[3] == '399' and row[6] == '-' and row[7] in ['ggt','agt']:
+			num_pos403_GT+=1
+
+
+#		if row[2] == '400' and row[3] == '401' and row[6] == 'a' and row[7] == 't':
+#			num_pos403_GT+=1
+
+#		if row[2] == '402' and row[3] == '403' and row[6] == 'g' and row[7] == 't':
+#			num_pos403_GT+=1
+
+
+
+		if int(row[2]) < int(l) and row[2] != "":
+			pos384_num_good = num_pos384_A + num_pos384_T 
+			pos384_num_bad = num_seq - pos384_num_good
+			pos403_num_good = num_pos403_GG + num_pos403_AG + num_pos403_CG + num_pos403_GT
+			pos403_num_bad = num_seq - pos403_num_good
+			
+			try:
+				rel_pos384_A=round(num_pos384_A/pos384_num_good*100, 2)
+				rel_pos384_T=round(num_pos384_T/pos384_num_good*100, 2)
+				rel_pos403_GG=round(num_pos403_GG/pos403_num_good*100, 2)
+				rel_pos403_AG=round(num_pos403_AG/pos403_num_good*100, 2)
+				rel_pos403_CG=round(num_pos403_CG/pos403_num_good*100, 2)
+				rel_pos403_GT=round(num_pos403_GT/pos403_num_good*100, 2)
+			except:
+				pass
+				
+			with open('Test_count_H3F3A_individual.csv', 'a+') as q:
+				writer=csv.writer(q, delimiter=',')
+				writer.writerow([num_seq,pos384_num_good,pos384_num_bad,num_pos384_A,rel_pos384_A,num_pos384_T,rel_pos384_T,pos403_num_good,pos403_num_bad,
+				num_pos403_GG,rel_pos403_GG,num_pos403_AG,rel_pos403_AG,num_pos403_CG,rel_pos403_CG,num_pos403_GT,rel_pos403_GT])			
+				
+			num_seq+=1
+
+		l = row[2]
+
+
+##ratioWt = round(num_Wt/num_seq*100, 2)
+##ratio_pos384_T = round(num_pos384_T/num_seq*100, 2)
+##ratio_pos403_AG = round(num_pos403_AG/num_seq*100, 2)
+##ratio_pos403_CG = round(num_pos403_CG/num_seq*100, 2)
+##ratio_pos403_GT = round(num_pos403_GT/num_seq*100, 2)
+
+##sum_ratio = ratioWt + ratio_pos384_T + ratio_pos403_AG + ratio_pos403_CG + ratio_pos403_GT
+
+#pos384_num_good = num_pos384_A + num_pos384_T 
+#pos384_num_bad = num_seq - pos384_num_good
+
+#pos403_num_good = num_pos403_GG + num_pos403_AG + num_pos403_CG + num_pos403_GT
+#pos403_num_bad = num_seq - pos403_num_good
+
+
+
+##n_ratioWt = round(ratioCG/sum_ratio*100, 2)
+##n_ratio_pos384_T = round(ratioTG/sum_ratio*100, 2)
+##n_ratio_pos403_AG = round(ratioAG/sum_ratio*100, 2)
+##n_ratio_pos403_CG = round(ratioCA/sum_ratio*100, 2)
+##n_ratio_pos403_GT = round(ratioCT/sum_ratio*100, 2)
+
+
+
+#with open(sys.argv[1]+'_count_H3F3A.csv', 'w') as q:
+#	writer=csv.writer(q, delimiter=',')
+#	writer.writerow([num_seq,pos384_num_good,pos384_num_bad,num_pos384_A,num_pos384_T,pos403_num_good,pos403_num_bad,num_pos403_GG,num_pos403_AG,num_pos403_CG,num_pos403_GT])
+
+
+#with open('../H3F3A_graph.csv','r') as j: 
+#	reader=csv.reader(j, delimiter=',')
+#	for row in reader:pass
+#	try:
+#		num_seq+=int(row[0])
+#		pos384_num_good+=int(row[1])
+#		pos384_num_bad+=int(row[2])
+#		num_pos384_A+=int(row[3])
+#		num_pos384_T+=int(row[5])
+#		pos403_num_good+=int(row[7])
+#		pos403_num_bad+=int(row[8])
+#		num_pos403_GG+=int(row[9])
+#		num_pos403_AG+=int(row[11])
+#		num_pos403_CG+=int(row[13])
+#		num_pos403_GT+=int(row[15])
+#	except:
+#		pass
+#	
+#	rel_pos384_A=num_pos384_A/pos384_num_good*100
+#	rel_pos384_T=num_pos384_T/pos384_num_good*100
+#	rel_pos403_GG=num_pos403_GG/pos403_num_good*100
+#	rel_pos403_AG=num_pos403_AG/pos403_num_good*100
+#	rel_pos403_CG=num_pos403_CG/pos403_num_good*100
+#	rel_pos403_GT=num_pos403_GT/pos403_num_good*100
+#	
+#
+#	with open('../H3F3A_graph.csv', 'a+') as f:
+#		writer=csv.writer(f, delimiter=',')
+#		writer.writerow([num_seq,pos384_num_good,pos384_num_bad,num_pos384_A,rel_pos384_A,num_pos384_T,rel_pos384_T,pos403_num_good,pos403_num_bad,
+#				num_pos403_GG,rel_pos403_GG,num_pos403_AG,rel_pos403_AG,num_pos403_CG,rel_pos403_CG,num_pos403_GT,rel_pos403_GT])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
